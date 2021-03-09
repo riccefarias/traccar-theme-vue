@@ -1,32 +1,28 @@
 <template>
   <div id="app">
-      <div v-if="isAuthed">
-        <div>Usuário logado: {{user.name}} <input type="button" value="Sair" @click="isAuthed=false"></div>
-
-        <div>
-          <div>DISPOSITIVOS</div>
-          <div v-for="(d,k) in devices" :key="k">
-            {{d.uniqueId}} - {{d.name}} - {{d.status}}
-          </div>
-        </div>
-
-      </div>
-      <div v-else>
-        <div>Não logado</div>
-        <div><input v-model="email" type="text" placeholder="email" ></div>
-        <div><input v-model="password" type="password" placeholder="senha"></div>
-        <div><input type="button" value="Login" @click="ok()"></div>
-      </div>
+      <router-view></router-view>
   </div>
 </template>
 
 <script>
 import Vue from 'vue';
 import traccar from './kore/traccarConnector/index.js'
+import VueRouter from 'vue-router';
+import routes from './routes.js';
+import { BootstrapVue } from 'bootstrap-vue'
 
-Vue.use(traccar,'https://central.kore.geo.br/api');
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+
+Vue.use(BootstrapVue)/
+Vue.use(VueRouter);
+
+let router = new VueRouter({routes})
+
+Vue.use(traccar,'http://central.kore.geo.br/api');
 
 export default {
+  router,
   traccar,
   name: 'App',
   data: function(){
@@ -70,6 +66,5 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
