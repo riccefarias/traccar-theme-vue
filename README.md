@@ -1,13 +1,13 @@
 # traccar-theme-free
 
+
+## Sobre
+A proposta deste projeto é desenvolver um tema para o Traccar ao mesmo tempo que vou dando dicas de como cada um poderá personalizar e criar o seu próprio tema.
+
+
 ## Project setup
 ```
 npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
 ```
 
 ### Compiles and minifies for production
@@ -15,10 +15,11 @@ npm run serve
 npm run build
 ```
 
-### Lints and fixes files
-```
-npm run lint
-```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## Contribua
+Se você gostou da idéia e quer me ajudar, pode me mandar um pix de qualquer valor nesta chave -> nubank@kore.dev.br
+
+
+
+
+
