@@ -31,8 +31,23 @@ export default{
   },
   methods: {
     doLogin: function(){
+
+        if(this.email==='' || this.password===''){
+
+
+          this.$bvModal.msgBoxOk('Você precisa preencher seus dados.',{title: 'Ops!',centered: true})
+
+          return false;
+        }
+
         this.$traccar.login(this.email,this.password).then((r)=>{
-            alert(r.data.name);
+            this.$store.commit('setAuth',r.data);
+            this.$router.push('/dashboard');
+        }).catch(()=>{
+
+            this.$bvModal.msgBoxOk('Parece que você digitou um dado incorreto.',{title: 'Ops!',centered: true})
+
+            this.$store.commit('setAuth',false);
         });
 
     }

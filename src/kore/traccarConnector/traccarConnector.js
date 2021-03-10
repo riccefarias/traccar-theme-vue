@@ -11,7 +11,7 @@ let connector = function(server){
         timeout: 30000,
         withCredentials: true,
         validateStatus: function (status) {
-            return status < 500; // Resolve only if the status code is less than 500
+            return (status < 400); // Resolve only if the status code is less than 500
         }
     });
 
@@ -32,6 +32,10 @@ connector.prototype.login = function(email,password){
 
 connector.prototype.getDevices = function(){
     return this.axios.get('/devices');
+}
+
+connector.prototype.getPositions = function(){
+    return this.axios.get('/positions');
 }
 
 export default connector;
