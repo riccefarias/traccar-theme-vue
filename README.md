@@ -4,6 +4,8 @@
 ## Sobre
 A proposta deste projeto é desenvolver um tema para o Traccar ao mesmo tempo que vou dando dicas de como cada um poderá personalizar e criar o seu próprio tema.
 
+## Série de Videos no Youtube
+https://www.youtube.com/playlist?list=PL6mLgINE3sKbWY6dDYzeKNm-AVL0628Tt
 
 ## Project setup
 ```
