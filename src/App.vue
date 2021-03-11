@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+      <kore-header v-if="$store.state.user"></kore-header>
       <router-view></router-view>
   </div>
 </template>
@@ -43,6 +44,9 @@ const store = new Vuex.Store({
   mutations: {
     setAuth (state,payload) {
       state.user = payload;
+      if(payload===false){
+        router.push('/login');
+      }
     },
     setDevices(state,payload){
       state.devices = payload;
@@ -86,6 +90,7 @@ export default {
 
   },
   components: {
+    'kore-header': ()=>import('@/components/kore-header.vue')
   }
 }
 </script>

@@ -4,20 +4,14 @@
           :zoom="zoom"
           :center="center"
           :options="mapOptions"
-          style="width: 100vw;height: 100vh;"
+          style="width: 100vw;height: calc(100vh - 70px);"
       >
         <l-tile-layer
             :url="url"
             :attribution="attribution"
         />
 
-        <template v-for="(d,k) in $store.state.devices">
-          <l-marker v-if="getPosition(d)"  :key="k"  :lat-lng="getPosition(d)">
-            <l-icon :icon-size="[60,60]" :icon-anchor="[30,30]">
-              <img width="100%" src="/__img/car.png">
-            </l-icon>
-          </l-marker>
-        </template>
+        <kore-car v-for="(d,k) in $store.state.devices" :key="k" :car="d" :position="getPosition(d)"></kore-car>
 
       </l-map>
 
@@ -29,16 +23,15 @@
 import _ from 'lodash';
 
 import { latLng } from "leaflet";
-import { LMap, LTileLayer, LMarker,LIcon } from 'vue2-leaflet';
+import { LMap, LTileLayer } from 'vue2-leaflet';
 import 'leaflet/dist/leaflet.css';
 
 export default{
     name: 'Dashboard',
   components: {
-    LIcon,
+      'kore-car': ()=>import('@/components/kore-car.vue'),
     LMap,
     LTileLayer,
-    LMarker
   },
   methods: {
       getPosition: function(d){
