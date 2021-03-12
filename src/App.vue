@@ -1,7 +1,8 @@
 <template>
   <div id="app">
       <kore-header v-if="$store.state.user"></kore-header>
-      <router-view></router-view>
+      <kore-action v-if="$store.state.user"></kore-action>
+      <router-view :style="($store.state.user)?'margin-top: 70px;':''"></router-view>
   </div>
 </template>
 
@@ -90,12 +91,18 @@ export default {
 
   },
   components: {
-    'kore-header': ()=>import('@/components/kore-header.vue')
+    'kore-header': ()=>import('@/components/kore-header.vue'),
+    'kore-action': ()=>import('@/components/kore-action.vue')
   }
 }
 </script>
 
 <style>
+
+body{
+  overflow: hidden;
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

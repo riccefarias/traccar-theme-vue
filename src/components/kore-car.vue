@@ -1,6 +1,6 @@
 <template>
   <div>
-    <l-marker v-if="position"  :key="k"  :lat-lng="position">
+    <l-marker v-if="position" :lat-lng="position">
       <l-icon :icon-size="[60,60]" :icon-anchor="[30,30]">
         <div class="car" style="position: relative;width: 60px;height: 60px;">
           <div class="info">

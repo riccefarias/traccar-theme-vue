@@ -1,5 +1,6 @@
 <template>
     <div>
+      <router-view></router-view>
       <l-map
           :zoom="zoom"
           :center="center"
@@ -32,6 +33,25 @@ export default{
       'kore-car': ()=>import('@/components/kore-car.vue'),
     LMap,
     LTileLayer,
+  },
+  created: function(){
+      this.$root.$on('follow',()=>{
+          this.isFollow = !this.isFollow;
+      });
+  },
+  watch: {
+      '$route.query.deviceId': function(){
+            if(this.$route.query.deviceId){
+                let pos = _.find(this.$store.state.positions,{deviceId: parseInt(this.$route.query.deviceId)});
+
+                if(pos){
+                  this.zoom = 18;
+                  setTimeout(()=> {
+                    this.center = {lat: pos.latitude, lng: pos.longitude};
+                  },200);
+                }
+            }
+      }
   },
   methods: {
       getPosition: function(d){

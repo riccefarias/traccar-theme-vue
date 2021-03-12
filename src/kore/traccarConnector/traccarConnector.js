@@ -38,5 +38,9 @@ connector.prototype.getPositions = function(){
     return this.axios.get('/positions');
 }
 
+connector.prototype.sendStopEngine = function(deviceId){
+    return this.axios.post('/commands/send',{"id":0,"description":"Novo...","deviceId":deviceId,"type":"engineStop","textChannel":false,"attributes":{}})
+}
+
 export default connector;
 

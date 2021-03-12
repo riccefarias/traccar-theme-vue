@@ -79,6 +79,11 @@ export default{
   background: white;
   height: 70px;
   width: 100vw;
+  border-bottom: silver 1px solid;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 999999;
 }
 
 .selector{
