@@ -2,9 +2,16 @@
 
 import axios from 'axios';
 
+import Emitter from './Emitter';
 
-let connector = function(server){
+
+
+let connector = function(server,vue){
     this.server = server;
+    this.vue = vue;
+    this.vm = false;
+    this.ws = null;
+    this.listeners = {"open": [],"message":[],"close":[]};
 
     this.axios = axios.create({
         baseURL: this.server,
@@ -15,9 +22,35 @@ let connector = function(server){
         }
     });
 
+    vue.mixin({created: function(){
+            connector.vm = this;
+        }})
+
     console.log("Instance of " + server);
 }
 
+
+
+connector.prototype.startWS = function(){
+    let wsServer = this.server.replace('http://','ws://').replace('https://','wss://');
+    this.ws = new WebSocket(wsServer+'/socket');
+    this.ws.onopen = (event)=>{
+        Emitter.emit('open',event);
+    }
+
+    this.ws.onclose = (event)=>{
+        Emitter.emit('close',event);
+    }
+
+    this.ws.onmessage = (d)=>{
+        let data = JSON.parse(d.data);
+        Emitter.emit('message',data);
+    }
+}
+
+connector.prototype.on = function(label,fnc){
+    Emitter.addListener(label,fnc);
+}
 
 connector.prototype.login = function(email,password){
 

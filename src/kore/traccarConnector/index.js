@@ -9,6 +9,9 @@ import connector from './traccarConnector.js';
 
 
     function traccar(app,server) {
+
+
+
         if (traccar.installed) {
             return;
         }
@@ -20,7 +23,8 @@ import connector from './traccarConnector.js';
 
         traccar.installed = true;
 
-        let traccarConnector = new connector(server);
+
+        let traccarConnector = new connector(server,app);
 
         if (semver.lt(app.version, '3.0.0')) {
             Object.defineProperties(app.prototype, {

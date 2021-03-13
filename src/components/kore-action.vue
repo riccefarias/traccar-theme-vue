@@ -1,6 +1,6 @@
 <template>
-  <div class="action" :class="{show: $route.query.deviceId!=null}">
-    <ul>
+  <div class="action" :class="{show: car!=null}">
+    <ul v-if="car">
       <li v-b-tooltip.right title="Seguir">
         <a href="" @click.prevent="$router.push({query: {deviceId: $route.query.deviceId,follow: ($route.query.follow==='true')?'false':'true'}})">
           <img :src="($route.query.follow==='true')?'__img/mapOn.png':'__img/mapOff.png'"><br>
@@ -9,13 +9,13 @@
 
       <li v-b-tooltip.right title="Bloquear">
         <a  @click.prevent="doStopEngine()">
-          <img src="__img/blockOff.png"><br>
+          <img :src="(pos.attributes.block)?'__img/blockOn.png':'__img/blockOff.png'"><br>
         </a>
       </li>
 
       <li v-b-tooltip.right title="Histórico de Rota">
-        <router-link :to="{path: '/dashboard/routes',query: $route.query}">
-          <img src="__img/routeOff.png"><br>
+        <router-link :to="{path: ($route.path.match('routes'))?'/dashboard':'/dashboard/routes',query: $route.query}">
+          <img :src="($route.path.match('routes'))?'__img/routeOn.png':'__img/routeOff.png'"><br>
         </router-link>
       </li>
     </ul>
@@ -24,14 +24,25 @@
 </template>
 
 <script>
+
+import _ from 'lodash'
+
 export default{
+  computed:{
+    car: function(){
+      return _.find(this.$store.state.devices,{id: parseInt(this.$route.query.deviceId)});
+    },
+    pos: function(){
+      return _.findLast(this.$store.state.positions,{deviceId: parseInt(this.$route.query.deviceId)});
+    }
+  },
   methods: {
     doStopEngine: function(){
       this.$bvModal.msgBoxConfirm('Deseja realmente bloquear este veiculo?',{title: 'Tem certeza?',centered: true}).then((response)=>{
           if(response){
             // eslint-disable-next-line no-unused-vars
             this.$traccar.sendStopEngine(parseInt(this.$route.query.deviceId)).then((r)=>{
-
+                  this.$bvModal.msgBoxOk('Seu veiculo será bloqueado em alguns segundos...',{title: 'Suceso',centered: true});
             });
           }
       });

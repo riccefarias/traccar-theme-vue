@@ -2,7 +2,7 @@
   <b-container id="header" fluid>
       <b-row align-h="between">
         <b-col style="text-align: left;padding: 10px;">
-          <img src="__img/logoblack.png" height="55px">
+          <img style="cursor: pointer;" @click="$router.push({path: '/dashboard',query: $route.query})" src="__img/logoblack.png" height="55px">
         </b-col>
         <b-col class="selector">
               <div v-if="isSearch" style="position: relative;">
@@ -22,7 +22,8 @@
                     -- SELECIONE UM VEICULO --
                 </div>
                 <div v-else>
-                    {{selected.name}}
+                    <div style="float: left;"><img :src="(selectedPos.attributes.ignition)?'__img/keyGreen.png':'__img/keyOff.png'" height="30px"></div>
+                    <div>{{selected.name}}</div>
                 </div>
               </div>
 
@@ -53,7 +54,10 @@ export default{
       });
     },
     selected: function(){
-        return _.find(this.$store.state.devices,{id: parseInt(this.$route.query.deviceId)});
+      return _.find(this.$store.state.devices,{id: parseInt(this.$route.query.deviceId)});
+    },
+    selectedPos: function(){
+      return _.findLast(this.$store.state.positions,{deviceId: parseInt(this.$route.query.deviceId)});
     }
   },
   methods: {

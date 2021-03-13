@@ -54,6 +54,9 @@ const store = new Vuex.Store({
     },
     setPositions(state,payload){
       state.positions = payload;
+    },
+    putPosition(state,payload){
+      state.positions.push(payload);
     }
   }
 })
@@ -70,12 +73,32 @@ export default {
     }
   },
   watch: {
-    '$store.state.user': function(u){
+    '$store.state.user': function(u,a){
+        if(a===false && u!==false){
+          this.$traccar.startWS();
+        }
         if(u){
           this.getDevices();
           this.getPositions();
         }
     }
+  },
+  created: function(){
+    this.$traccar.on('open',()=>{
+      this.$bvToast.toast('WebSocket Conectado..',{title: 'Aviso',toaster:'b-toaster-bottom-right'});
+    });
+
+    this.$traccar.on('close',()=>{
+      this.$bvToast.toast('WebSocket Caiu =/',{title: 'Aviso',toaster:'b-toaster-bottom-right'});
+    })
+
+    this.$traccar.on('message',(d)=>{
+          if(d.positions){
+            d.positions.map((p)=>{
+                this.$store.commit('putPosition',p);
+            })
+          }
+    });
   },
   methods: {
     getDevices: function(){
