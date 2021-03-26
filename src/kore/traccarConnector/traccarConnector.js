@@ -75,5 +75,14 @@ connector.prototype.sendStopEngine = function(deviceId){
     return this.axios.post('/commands/send',{"id":0,"description":"Novo...","deviceId":deviceId,"type":"engineStop","textChannel":false,"attributes":{}})
 }
 
+connector.prototype.loadTrips = function(id,from,to){
+    return this.axios.get('/reports/trips?_dc=1616717856816&deviceId='+id+'&type=allEvents&from='+from+'&to='+to+'&daily=false&page=1&start=0&limit=25');
+}
+
+
+connector.prototype.loadRoute = function(id,from,to){
+    return this.axios.get('/reports/route?_dc=1616717856816&deviceId='+id+'&type=allEvents&from='+from+'&to='+to+'&daily=false&page=1&start=0&limit=25');
+}
+
 export default connector;
 

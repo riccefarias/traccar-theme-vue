@@ -18,6 +18,10 @@
             :lat-lngs="trailCar"
         />
 
+        <l-polyline
+            :lat-lngs="pointsCpt"
+        />
+
       </l-map>
 
     </div>
@@ -43,6 +47,10 @@ export default{
       this.$root.$on('follow',()=>{
           this.isFollow = !this.isFollow;
       });
+
+      this.$root.$on('points',(p)=>{
+        this.points = p;
+      })
   },
   computed: {
       followCar: function(){
@@ -53,19 +61,32 @@ export default{
           return false;
         }
       },
-      trailCar: function(){
+    trailCar: function(){
 
-          let pos = _.chunk(_.orderBy(_.filter(this.$store.state.positions,{deviceId: parseInt(this.$route.query.deviceId)}),['id'],['desc']),10);
+      let pos = _.chunk(_.orderBy(_.filter(this.$store.state.positions,{deviceId: parseInt(this.$route.query.deviceId)}),['id'],['desc']),10);
 
-          let points = [];
-          if(pos.length>0) {
-            pos[0].map((p) => {
-              points.push({lat: p.latitude, lng: p.longitude});
-            });
-          }
-
-          return points;
+      let points = [];
+      if(pos.length>0) {
+        pos[0].map((p) => {
+          points.push({lat: p.latitude, lng: p.longitude});
+        });
       }
+
+      return points;
+    },
+    pointsCpt: function(){
+
+      let pos = this.points;
+
+      let points = [];
+      if(pos.length>0) {
+        pos.map((p) => {
+          points.push({lat: p.latitude, lng: p.longitude});
+        });
+      }
+
+      return points;
+    }
   },
   watch: {
       '$route.query.deviceId': function(){
@@ -107,7 +128,8 @@ export default{
       mapOptions: {
         zoomSnap: 0.5
       },
-      showMap: true
+      showMap: true,
+      points: []
     };
   },
 }
