@@ -7,6 +7,9 @@
 </template>
 
 <script>
+
+import _ from 'lodash';
+
 import Vue from 'vue';
 import traccar from './kore/traccarConnector/index.js'
 import VueRouter from 'vue-router';
@@ -17,7 +20,7 @@ import Vuex from 'vuex'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
-Vue.use(BootstrapVue)/
+Vue.use(BootstrapVue)
 Vue.use(VueRouter);
 
 let router = new VueRouter({routes})
@@ -96,6 +99,29 @@ export default {
           if(d.positions){
             d.positions.map((p)=>{
                 this.$store.commit('putPosition',p);
+            })
+          }
+          //{"events":[{"id":87569,"attributes":{},"deviceId":10,"type":"deviceMoving","serverTime":"2021-04-09T14:06:36.835+00:00","positionId":533708,"geofenceId":0,"maintenanceId":0}]}
+          if(d.events){
+            d.events.map((e)=>{
+
+                var device = _.find(this.$store.state.devices,{id: e.deviceId});
+
+                console.log(device);
+
+                var title = device.name;
+                var message = '';
+
+                switch(e.type) {
+                  case "deviceOnline":
+                      message = 'Dispositivo Conectado';
+                    break;
+                  default:
+                    message = e.type;
+                }
+
+                this.$bvToast.toast(message,{title: title,toaster:'b-toaster-bottom-right',autoHideDelay: 15000});
+
             })
           }
     });
